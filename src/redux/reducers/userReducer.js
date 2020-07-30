@@ -16,7 +16,7 @@ const initialState = {
   notifications: [],
   NoImg,
 };
-
+let index;
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_AUTHENTICATED:
@@ -39,25 +39,40 @@ export default function (state = initialState, action) {
         loading: true,
       };
     case UPVOTE_SCREAM:
+      state.likes.findIndex((vote, i) => {
+        if (vote.post === action.payload._id) {
+          state.likes.splice(i, 1);
+          return { ...state };
+        }
+      });
+
       return {
         ...state,
         likes: [
           ...state.likes,
           {
-            user: state.credentials.handle,
-            post: action.payload.post._id,
+            user: action.payload.user._id,
+            post: action.payload._id,
             vote: 'up',
           },
         ],
       };
+
     case DOWNVOTE_SCREAM:
+      state.likes.findIndex((vote, i) => {
+        if (vote.post === action.payload._id) {
+          state.likes.splice(i, 1);
+          return { ...state };
+        }
+      });
+
       return {
         ...state,
         likes: [
           ...state.likes,
           {
-            user: state.credentials.handle,
-            post: action.payload.post._id,
+            user: action.payload.user._id,
+            post: action.payload._id,
             vote: 'down',
           },
         ],

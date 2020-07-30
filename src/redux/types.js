@@ -18,3 +18,4 @@ export const DOWNVOTE_SCREAM = 'DOWNVOTE_SCREAM';
 export const DELETE_SCREME = 'DELETE_SCREME';
 export const POST_SCREAM = 'POST_SCREAM';
 export const SUBMIT_COMMENT = 'SUBMIT_COMMENT';
+export const UPDATE_POST = 'UPDATE_POST';

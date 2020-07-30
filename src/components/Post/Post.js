@@ -8,7 +8,6 @@ import MyButton from '../../util/MyButton';
 import DeleteScream from './DeleteScream.js';
 import EditPost from './EditPost.js';
 
-import ScreamDialog from './ScreamDialog';
 import VoteButton from '../VoteButton';
 //REDUX STUFF
 import { connect } from 'react-redux';
@@ -50,7 +49,7 @@ class Scream extends Component {
     dayjs.extend(relativeTime);
     const {
       classes,
-      post: { text, createdAt, userImage, _id, votes, commentCount },
+      post: { text, createdAt, userImage, _id, voteCount, commentCount },
       user: { authenticated, credentials, NoImg },
     } = this.props;
 
@@ -97,17 +96,12 @@ class Scream extends Component {
           <Typography variant="body1">{text}</Typography>
           <div className={classes.footerIcons}>
             <VoteButton screamId={_id} />
-            <span>{votes} Likes</span>
+            <span>{voteCount} Likes</span>
             <MyButton tip="comments">
               <ChatIcon color="primary" />
             </MyButton>
             <span>{commentCount} Comments</span>
           </div>
-          <ScreamDialog
-            post={this.props.post}
-            user={this.props.user}
-            openDialog={this.props.openDialog}
-          />
         </CardContent>
       </Card>
     );

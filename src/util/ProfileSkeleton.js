@@ -45,9 +45,6 @@ const ProfileSkeleton = (props) => {
           <div className={classes.fullLine} />
           <div className={classes.fullLine} />
           <hr />
-          <LocationOn color="primary" />
-          <span>Location</span>
-          <hr />
           <CalendarToday clolr="primary" /> Joined Date
         </div>
       </div>

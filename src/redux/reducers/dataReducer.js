@@ -7,7 +7,6 @@ import {
   POST_SCREAM,
   SET_SCREAM,
   SUBMIT_COMMENT,
-  MARK_NOTIFICATIONS_READ,
 } from '../types';
 import NoImg from '../../images/no-image.png';
 const initialState = {
@@ -36,15 +35,12 @@ export default function (state = initialState, action) {
     case UPVOTE_SCREAM:
     case DOWNVOTE_SCREAM:
       index = state.screams.findIndex(
-        (scream) => scream.screamId === action.payload.screamId
+        (scream) => scream._id === action.payload._id
       );
       state.screams[index] = action.payload;
-      if (state.scream.screamId === action.payload.screamId) {
+      if (state.scream._id === action.payload._id) {
         state.scream = action.payload;
       }
-      return { ...state };
-    case MARK_NOTIFICATIONS_READ:
-      state.notifications.forEach((not) => (not.read = true));
       return { ...state };
     case POST_SCREAM:
       return {

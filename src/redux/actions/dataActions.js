@@ -11,6 +11,7 @@ import {
   STOP_LOADING_UI,
   SET_SCREAM,
   SUBMIT_COMMENT,
+  UPDATE_POST,
 } from '../types';
 import axios from '../../axios-instance';
 
@@ -32,8 +33,8 @@ export const upVote = (screamId) => (dispatch) => {
   axios
     .get(`/posts/${screamId}/up`)
     .then((res) => {
-      console.log(res.data);
-      dispatch({ type: UPVOTE_SCREAM, payload: res.data });
+      console.log('[up]', res.data);
+      dispatch({ type: UPVOTE_SCREAM, payload: res.data.post });
     })
     .catch((err) => console.log(err));
 };
@@ -42,7 +43,8 @@ export const downVote = (screamId) => (dispatch) => {
   axios
     .get(`/posts/${screamId}/down`)
     .then((res) => {
-      dispatch({ type: DOWNVOTE_SCREAM, payload: res.data });
+      console.log('[up]', res.data);
+      dispatch({ type: DOWNVOTE_SCREAM, payload: res.data.post });
     })
     .catch((err) => console.log(err));
 };
@@ -105,6 +107,11 @@ export const getUserData = (userHandle) => (dispatch) => {
 export const deleteScream = (screamId) => (dispatch) => {
   axios.delete(`/posts/${screamId}`).then(() => {
     dispatch({ type: DELETE_SCREME, payload: screamId });
+  });
+};
+export const updatePost = (screamId) => (dispatch) => {
+  axios.patch(`/posts/${screamId}`).then(() => {
+    dispatch({ type: UPDATE_POST, payload: screamId });
   });
 };
 export const clearErrors = () => (dispatch) => {
