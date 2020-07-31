@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 //Redux Stuff
 import { connect } from 'react-redux';
-import { loginUser } from '../redux/actions/userActions';
+import { loginUser, forgotPassword } from '../redux/actions/userActions';
 const styles = (theme) => ({ ...theme.spreadThis });
 
 //MUI
@@ -101,6 +101,9 @@ class Login extends Component {
             <br />
             <small>
               dont have an account ? sign up <Link to="/signup">here</Link>
+              <br />
+              forgot password? Reset with your mail{' '}
+              <Link to="/forgotPass">here</Link>
             </small>
           </form>
         </Grid>

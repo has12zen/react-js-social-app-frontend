@@ -5,33 +5,31 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import AppIcon from '../images/icon.png';
 import { validateOnChange } from '../util/passwordValidation';
-//MUI STUFF
+//MUI stuff
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-//REDUX STUFF
+//Redux Stuff
 import { connect } from 'react-redux';
-import { signupUser } from '../redux/actions/userActions';
+import { resetPassword } from '../redux/actions/userActions';
 const styles = (theme) => ({ ...theme.spreadThis });
 
 //MUI
-class Signup extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: '',
       password: '',
-      confirmPassword: '',
-      handle: '',
-      loading: false,
+      passwordConfirm: '',
       errors: {},
+      loading: false,
       clientValidateError: false,
     };
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps, prevState);
+    console.log(prevProps, this.props);
     if (
       prevProps.UI.errors !== this.props.UI.errors &&
       !this.props.UI.loading
@@ -40,26 +38,26 @@ class Signup extends Component {
       this.setState({ errors: this.props.UI.errors });
     }
   }
-
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({ loading: true });
-    const newUserData = {
-      email: this.state.email,
+    const userData = {
       password: this.state.password,
-      passwordConfirm: this.state.confirmPassword,
-      userHandle: this.state.handle,
+      passwordConfirm: this.state.passwordConfirm,
     };
-    this.props.signupUser(newUserData, this.props.history);
-  };
 
+    this.props.resetPassword(
+      userData,
+      this.props.match.params.token,
+      this.props.history
+    );
+  };
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
     if (
       event.target.name === 'password' ||
-      event.target.name === 'confirmPassword'
+      event.target.name === 'passwordConfirm'
     ) {
       this.setState(
         this.props.validateOnChange(
@@ -73,40 +71,20 @@ class Signup extends Component {
   render() {
     const {
       classes,
-      UI: { loading, passwordReset },
+      UI: { loading },
     } = this.props;
     const { errors } = this.state;
     return (
       <Grid container className={classes.form}>
         <Grid item sm />
         <Grid item sm>
-          {passwordReset ? (
+          <img src={AppIcon} alt=" Icon" className={classes.image} />
+          {
             <Fragment>
               <Typography variant="h5" className={classes.pageTitle}>
-                Please check your mail to continue
-              </Typography>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <img src={AppIcon} alt="Icon" className={classes.image} />
-              <Typography variant="h2" className={classes.pageTitle}>
-                Signup
+                Enter the new password
               </Typography>
               <form noValidate onSubmit={this.handleSubmit}>
-                <TextField
-                  id="email"
-                  name="email"
-                  type="email"
-                  label="Email"
-                  helperText={
-                    errors.email ? errors.email.properties.email : null
-                  }
-                  error={errors.email ? true : false}
-                  className={classes.textField}
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                  fullWidth
-                />
                 <TextField
                   id="password"
                   name="password"
@@ -122,8 +100,8 @@ class Signup extends Component {
                   fullWidth
                 />
                 <TextField
-                  id="confirmPassword"
-                  name="confirmPassword"
+                  id="passwordConfirm"
+                  name="passwordConfirm"
                   type="password"
                   label="Confirm Password"
                   helperText={
@@ -133,46 +111,26 @@ class Signup extends Component {
                   }
                   error={errors.passwordConfirm ? true : false}
                   className={classes.textField}
-                  value={this.state.confirmPassword}
+                  value={this.state.passwordConfirm}
                   onChange={this.handleChange}
                   fullWidth
                 />
-                <TextField
-                  id="handle"
-                  name="handle"
-                  type="text"
-                  label="Handle"
-                  helperText={errors.handle}
-                  error={errors.handle ? true : false}
-                  className={classes.textField}
-                  value={this.state.handle}
-                  onChange={this.handleChange}
-                  fullWidth
-                />
-                {errors.general && (
-                  <Typography variant={'body2'} className={classes.customError}>
-                    {errors.general}
-                  </Typography>
-                )}
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
                   className={classes.button}
-                  disabled={loading || this.state.clientValidateError}
+                  disabled={loading}
                 >
                   {loading && (
                     <CircularProgress size={30} className={classes.progress} />
                   )}
-                  Signup
+                  Submit
                 </Button>
               </form>
               <br />
-              <small>
-                Already have an account ? login <Link to="/login">here</Link>
-              </small>
             </Fragment>
-          )}
+          }
         </Grid>
         <Grid item sm />
       </Grid>
@@ -180,11 +138,11 @@ class Signup extends Component {
   }
 }
 
-Signup.protoTypes = {
+Login.protoTypes = {
   classes: PropTypes.object.isRequired,
+  resetPassword: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   UI: PropTypes.object.isRequired,
-  signupUser: PropTypes.func.isRequired,
   validateOnChange: PropTypes.func.isRequired,
 };
 
@@ -193,6 +151,12 @@ const mapStateToProps = (state) => ({
   UI: state.UI,
 });
 
-export default connect(mapStateToProps, { signupUser, validateOnChange })(
-  withStyles(styles)(Signup)
-);
+const mapActionsToProps = {
+  resetPassword,
+  validateOnChange,
+};
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(withStyles(styles)(Login));

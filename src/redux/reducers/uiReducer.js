@@ -3,11 +3,14 @@ import {
   CLEAR_ERRORS,
   LOADING_UI,
   STOP_LOADING_UI,
+  FORGOT_PASSWORD,
+  SIGNUP_EMAIL,
 } from '../types';
 
 const initialState = {
   loading: false,
   errors: null,
+  passwordReset: false,
 };
 
 export default function (state = initialState, action) {
@@ -33,6 +36,16 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: false,
+      };
+    case SIGNUP_EMAIL:
+      return {
+        ...state,
+        passwordReset: true,
+      };
+    case FORGOT_PASSWORD:
+      return {
+        ...state,
+        passwordReset: true,
       };
     default:
       return state;

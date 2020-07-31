@@ -18,6 +18,9 @@ import AuthRoute from './util/AuthRoute';
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
+import forgotPass from './pages/forgotPassword';
+import resetPass from './pages/resetPassword';
+import userActivation from './pages/userActivation';
 import axios from './axios-instance';
 import user from './pages/user';
 const theme = createMuiTheme(themeFile);
@@ -46,6 +49,13 @@ function App() {
               <Route exact path="/" component={home} />
               <AuthRoute exact path="/login" component={login} />
               <AuthRoute exact path="/signup" component={signup} />
+              <AuthRoute
+                exact
+                path="/activate/:token"
+                component={userActivation}
+              />
+              <AuthRoute exact path="/forgotPass" component={forgotPass} />
+              <AuthRoute exact path="/resetPass/:token" component={resetPass} />
               <Route exact path="/users/:handle" component={user} />
               <Route
                 exact
