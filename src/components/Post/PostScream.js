@@ -66,6 +66,7 @@ class PostScream extends Component {
   handleSubmitPost = (event) => {
     event.preventDefault();
     this.props.postScream({ text: this.state.text });
+    this.handleClose();
   };
   validateChange = (newValue, key) => {
     if (newValue.trim().length <= 10) {

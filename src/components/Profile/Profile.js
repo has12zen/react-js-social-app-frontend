@@ -37,15 +37,14 @@ class Profile extends Component {
     this.props.logoutUser();
   };
   handleEditPicture = () => {
-    const fileInput = document.getElementById('imageInput');
-    fileInput.click();
+    // const fileInput = document.getElementById('imageInput');
+    // fileInput.click();
   };
   render() {
     const {
       classes,
       user: { credentials, loading, authenticated, NoImg },
     } = this.props;
-    const createdAt = '';
     const imageUrl = false;
     const bio = '';
     const website = '';
@@ -107,7 +106,9 @@ class Profile extends Component {
                 </Fragment>
               )}
               <CalendarToday color="primary" />{' '}
-              <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
+              <span>
+                Joined {dayjs(credentials.createdAt).format('MMM YYYY')}
+              </span>
             </div>
             <MyButton tip="Log Out" onClick={this.handleLogout}>
               <KeyboardReturn color="primary" />

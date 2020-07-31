@@ -6,7 +6,7 @@ import {
   DELETE_SCREME,
   POST_SCREAM,
   SET_SCREAM,
-  SUBMIT_COMMENT,
+  UPDATE_POST,
 } from '../types';
 import NoImg from '../../images/no-image.png';
 const initialState = {
@@ -47,14 +47,15 @@ export default function (state = initialState, action) {
         ...state,
         screams: [action.payload, ...state.screams],
       };
-    case SUBMIT_COMMENT:
-      return {
-        ...state,
-        scream: {
-          ...state.scream,
-          comments: [action.payload, ...state.scream.comments],
-        },
-      };
+    case UPDATE_POST:
+      index = state.screams.findIndex(
+        (scream) => scream._id === action.payload._id
+      );
+      state.screams[index] = action.payload;
+      if (state.scream._id === action.payload._id) {
+        state.scream = action.payload;
+      }
+      return { ...state };
     case DELETE_SCREME:
       index = state.screams.findIndex(
         (scream) => scream._id === action.payload

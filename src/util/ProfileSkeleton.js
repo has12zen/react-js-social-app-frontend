@@ -5,7 +5,6 @@ import NoImg from '../images/no-image.png';
 //MUI
 import Paper from '@material-ui/core/Paper';
 //MUI ICON
-import LocationOn from '@material-ui/icons/LocationOn';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 const styles = (theme) => ({
   ...theme.spreadThis,

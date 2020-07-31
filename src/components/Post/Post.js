@@ -19,7 +19,8 @@ import Typography from '@material-ui/core/Typography';
 //Icons
 import ChatIcon from '@material-ui/icons/Chat';
 
-const styles = {
+const styles = (theme) => ({
+  ...theme.spreadThis,
   card: {
     display: 'flex',
     flexDirection: 'row',
@@ -43,7 +44,7 @@ const styles = {
     padding: 25,
     objectFit: 'cover',
   },
-};
+});
 class Scream extends Component {
   render() {
     dayjs.extend(relativeTime);
@@ -94,6 +95,7 @@ class Scream extends Component {
             {dayjs(createdAt).fromNow()}
           </Typography>
           <Typography variant="body1">{text}</Typography>
+          <hr className={classes.invisibleSeparator} />
           <div className={classes.footerIcons}>
             <VoteButton screamId={_id} />
             <span>{voteCount} Likes</span>

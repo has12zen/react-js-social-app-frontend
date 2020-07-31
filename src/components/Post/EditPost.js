@@ -4,11 +4,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import MyButton from '../../util/MyButton';
 //REDUX
 import { connect } from 'react-redux';
-import { deleteScream } from '../../redux/actions/dataActions';
+import { updatePost } from '../../redux/actions/dataActions';
 //MUI STUFF
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -42,7 +41,8 @@ export class EditPost extends Component {
   state = {
     open: false,
     text: '',
-    errors: '',
+    errors: {},
+    clientValidateError: false,
   };
   mapPostDetailsToState = (text) => {
     this.setState({
@@ -53,18 +53,34 @@ export class EditPost extends Component {
     this.setState({ open: true });
   };
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ open: false, errors: {}, text: this.state.text });
   };
-  deleteScream = () => {
-    this.props.deleteScream(this.props.screamId);
-    this.handleClose();
+  validateChange = (newValue, key) => {
+    if (newValue.trim().length <= 10) {
+      this.setState({
+        errors: { text: { properties: { message: 'Post too short' } } },
+        clientValidateError: true,
+      });
+    } else if (newValue.trim().length >= 156) {
+      this.setState({
+        errors: { text: { properties: { message: 'Post too long' } } },
+        text: newValue.trim().slice(0, 156),
+        clientValidateError: true,
+      });
+    } else {
+      this.setState({
+        errors: {},
+        clientValidateError: false,
+      });
+    }
   };
-  handleSubmit = () => {
+
+  handleSubmit = (event) => {
+    event.preventDefault();
     const post = {
-      _id: this.props.screamId,
       text: this.state.text,
     };
-    this.props.editUserDetails(post);
+    this.props.updatePost(this.props.screamId, post);
     this.handleClose();
   };
   componentDidMount() {
@@ -74,6 +90,7 @@ export class EditPost extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
+    this.validateChange(event.target.value, event.target.name);
   };
   render() {
     const { errors, text } = this.state;
@@ -94,7 +111,7 @@ export class EditPost extends Component {
           maxWidth="sm"
         >
           <DialogContent>
-            <form onSubmit={this.handleSubmitPost}>
+            <form onSubmit={this.handleSubmit}>
               <TextField
                 name="text"
                 label="Edit!!!"
@@ -144,9 +161,9 @@ export class EditPost extends Component {
 }
 
 EditPost.propTypes = {
-  deleteScream: PropTypes.func.isRequired,
+  updatePost: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   screamId: PropTypes.string.isRequired,
   postContent: PropTypes.string.isRequired,
 };
-export default connect(null, { deleteScream })(withStyles(styles)(EditPost));
+export default connect(null, { updatePost })(withStyles(styles)(EditPost));
